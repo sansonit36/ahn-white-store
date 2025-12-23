@@ -118,7 +118,7 @@ export const ProductPage: React.FC = () => {
   };
 
   return (
-    <div className="pt-20 md:pt-24 pb-32 md:pb-12 bg-white min-h-screen">
+    <div className="pt-28 md:pt-28 pb-32 md:pb-12 bg-white min-h-screen">
       <style>{`
         @keyframes scroll {
           0% { transform: translateX(0); }

@@ -32,7 +32,7 @@ export const Header: React.FC = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group z-50 relative">
             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-300 to-amber-200 group-hover:scale-110 transition-transform duration-500"></div>
-            <span className={`font-serif text-2xl font-bold tracking-wide ${textColorClass}`}>
+            <span className={`font-serif text-2xl font-bold tracking-wide whitespace-nowrap ${textColorClass}`}>
               AHN <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-yellow-700">White+</span>
             </span>
           </Link>
@@ -46,16 +46,16 @@ export const Header: React.FC = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-2 md:gap-4 z-50 relative">
-            <button 
+            <button
               onClick={toggleAdminMode}
               className={`p-2 rounded-full transition-colors hidden md:block ${isAdminMode ? 'bg-rose-500 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
               title="Toggle Admin Dashboard"
             >
               <ShieldCheck size={20} />
             </button>
-            
-            <button 
-              onClick={toggleCart} 
+
+            <button
+              onClick={toggleCart}
               className="relative p-2 hover:bg-rose-100 rounded-full transition-colors group"
             >
               <ShoppingBag size={24} className={textColorClass} />
@@ -65,8 +65,8 @@ export const Header: React.FC = () => {
                 </span>
               )}
             </button>
-            
-            <button 
+
+            <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`md:hidden p-2 ${textColorClass}`}
             >
@@ -80,24 +80,24 @@ export const Header: React.FC = () => {
       <div className={`fixed inset-0 bg-white z-40 transition-transform duration-300 ease-in-out pt-24 px-6 md:hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <nav className="flex flex-col gap-6 text-lg font-medium">
           <Link to="/" className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-rose-50 transition-colors">
-            <span className="flex items-center gap-3"><Home size={20} className="text-gray-500"/> Home</span>
+            <span className="flex items-center gap-3"><Home size={20} className="text-gray-500" /> Home</span>
             <ChevronRight size={16} className="text-gray-400" />
           </Link>
           <Link to="/product" className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-rose-50 transition-colors">
-            <span className="flex items-center gap-3"><Package size={20} className="text-gray-500"/> Shop Now</span>
+            <span className="flex items-center gap-3"><Package size={20} className="text-gray-500" /> Shop Now</span>
             <ChevronRight size={16} className="text-gray-400" />
           </Link>
           <a href="/#reviews" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-rose-50 transition-colors">
-            <span className="flex items-center gap-3"><Star size={20} className="text-gray-500"/> Reviews</span>
+            <span className="flex items-center gap-3"><Star size={20} className="text-gray-500" /> Reviews</span>
             <ChevronRight size={16} className="text-gray-400" />
           </a>
-          
+
           <div className="mt-8 border-t border-gray-100 pt-8">
             <p className="text-sm text-gray-400 uppercase tracking-widest mb-4 font-bold text-center">Contact & Support</p>
             <div className="flex justify-center gap-4 text-gray-500">
-               <a href="#" className="hover:text-rose-500">Instagram</a>
-               <a href="#" className="hover:text-rose-500">Facebook</a>
-               <a href="#" className="hover:text-rose-500">WhatsApp</a>
+              <a href="#" className="hover:text-rose-500">Instagram</a>
+              <a href="#" className="hover:text-rose-500">Facebook</a>
+              <a href="#" className="hover:text-rose-500">WhatsApp</a>
             </div>
           </div>
         </nav>
