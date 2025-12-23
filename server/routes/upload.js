@@ -26,10 +26,10 @@ router.post('/', upload.single('file'), async (req, res) => {
         const filename = uniqueSuffix + '.webp'; // Convert to WebP
         const filepath = path.join(uploadDir, filename);
 
-        // Optimize Image
+        // Optimize Image (Aggressive Mobile)
         await sharp(req.file.buffer)
-            .resize({ width: 1500, withoutEnlargement: true }) // Max width 1500px
-            .webp({ quality: 80 }) // Compress to 80% quality WebP
+            .resize({ width: 1000, withoutEnlargement: true }) // Max width 1000px
+            .webp({ quality: 60 }) // 60% Quality
             .toFile(filepath);
 
         // Return the file URL

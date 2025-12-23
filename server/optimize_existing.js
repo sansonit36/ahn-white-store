@@ -28,12 +28,13 @@ async function optimizeImages() {
 
         try {
             const ext = path.extname(file).toLowerCase();
-            let pipeline = sharp(filePath).resize({ width: 1500, withoutEnlargement: true });
+            let pipeline = sharp(filePath).resize({ width: 1000, withoutEnlargement: true });
 
             if (ext === '.png') {
-                pipeline = pipeline.png({ quality: 80, compressionLevel: 8, force: true });
+                // Aggressive PNG compression
+                pipeline = pipeline.png({ quality: 60, compressionLevel: 9, force: true, palette: true });
             } else if (ext === '.jpg' || ext === '.jpeg') {
-                pipeline = pipeline.jpeg({ quality: 80, force: true });
+                pipeline = pipeline.jpeg({ quality: 60, mozjpeg: true, force: true });
             } else {
                 continue; // Skip unknown formats
             }
