@@ -1,3 +1,4 @@
+process.env.TZ = 'Asia/Karachi'; // Set Timezone to PKT
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
