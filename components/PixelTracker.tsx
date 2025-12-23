@@ -34,6 +34,7 @@ export const PixelTracker: React.FC = () => {
                 'https://connect.facebook.net/en_US/fbevents.js');
 
             window.fbq('init', pixelConfig.facebookPixelId);
+            window.fbq('track', 'PageView'); // Track initial page view immediately after init
         }
 
         // TikTok Pixel Init
