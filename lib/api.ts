@@ -122,15 +122,41 @@ export const api = {
         await fetch(`${API_URL}/media/${id}`, { method: 'DELETE' });
     },
 
-    // Upload
-    uploadFile: async (file: File) => {
-        const formData = new FormData();
-        formData.append('file', file);
-        const res = await fetch(`${API_URL}/upload`, {
-            method: 'POST',
-            body: formData
+    // Upload with Progress
+    uploadFile: (file: File, onProgress?: (percent: number) => void): Promise<{ url: string }> => {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', `${API_URL}/upload`);
+
+            if (xhr.upload && onProgress) {
+                xhr.upload.onprogress = (event) => {
+                    if (event.lengthComputable) {
+                        const percent = Math.round((event.loaded / event.total) * 100);
+                        onProgress(percent);
+                    }
+                };
+            }
+
+            xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        resolve(response);
+                    } catch (e) {
+                        reject(new Error('Invalid JSON response'));
+                    }
+                } else {
+                    reject(new Error(xhr.statusText || 'Upload failed'));
+                }
+            };
+
+            xhr.onerror = () => reject(new Error('Network Error'));
+
+            xhr.send(formData);
         });
-        return res.json();
     },
 
     // Analytics

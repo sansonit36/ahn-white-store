@@ -972,18 +972,32 @@ const ContentView = () => {
   };
 
   // Before/After Upload
+  const [uploadStats, setUploadStats] = useState<{ [key: string]: number }>({}); // Keyed by field name, value 0-100
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
   const handleBeforeAfterUpload = async (type: 'before' | 'after', e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setUploading(true);
+    if (e.target.files?.[0]) {
+      const fieldName = type === 'before' ? 'beforeImage' : 'afterImage';
+      setUploadStats(prev => ({ ...prev, [fieldName]: 0 }));
+      setUploadError(null);
+
       try {
-        const file = e.target.files[0];
-        const res = await api.uploadFile(file);
-        if (type === 'before') updatePixelConfig({ beforeImage: res.url });
-        else updatePixelConfig({ afterImage: res.url });
-        setUploading(false);
-      } catch { setUploading(false); alert('Fail'); }
+        const res = await api.uploadFile(e.target.files[0], (percent) => {
+          setUploadStats(prev => ({ ...prev, [fieldName]: percent }));
+        });
+
+        const key = type === 'before' ? 'beforeImage' : 'afterImage';
+        updatePixelConfig({ [key]: res.url });
+
+        // Clear progress after short delay
+        setTimeout(() => setUploadStats(prev => ({ ...prev, [fieldName]: 0 })), 500);
+      } catch (err) {
+        console.error(err);
+        setUploadError(`Failed to upload ${type} image. Retry.`);
+        setUploadStats(prev => ({ ...prev, [fieldName]: 0 }));
+      }
     }
-  }
+  };
 
   // New Review State
   const [newReview, setNewReview] = useState({ user: '', rating: 5, comment: '' });
@@ -1016,6 +1030,14 @@ const ContentView = () => {
                   <span className="text-white font-bold flex items-center gap-2"><Upload size={16} /> Change</span>
                   <input type="file" className="hidden" accept="image/*" onChange={(e) => handleBeforeAfterUpload('before', e)} />
                 </label>
+                {uploadStats['beforeImage'] > 0 && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center pointer-events-none">
+                    <div className="text-white text-center">
+                      <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin mb-2 mx-auto"></div>
+                      <span className="font-bold">{uploadStats['beforeImage']}%</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
@@ -1026,6 +1048,14 @@ const ContentView = () => {
                   <span className="text-white font-bold flex items-center gap-2"><Upload size={16} /> Change</span>
                   <input type="file" className="hidden" accept="image/*" onChange={(e) => handleBeforeAfterUpload('after', e)} />
                 </label>
+                {uploadStats['afterImage'] > 0 && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center pointer-events-none">
+                    <div className="text-white text-center">
+                      <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin mb-2 mx-auto"></div>
+                      <span className="font-bold">{uploadStats['afterImage']}%</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
