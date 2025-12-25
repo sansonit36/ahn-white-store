@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route, useLocation, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Link, Navigate } from 'react-router-dom';
 import { ShopProvider, useShop } from './context/ShopContext';
 import { Header } from './components/Header';
 import { CartDrawer } from './components/CartDrawer';
