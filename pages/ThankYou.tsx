@@ -22,6 +22,15 @@ export const ThankYou: React.FC = () => {
 
     const hasTracked = React.useRef(false);
 
+    // Import helper (assuming dynamic import or top-level import, but let's use dynamic here or top level if possible, 
+    // but since replace_file_content can't add top-level imports easily without context, I'll update the whole file import section too? 
+    // No, I'll just assume standard import if I can, or use require? No, it's TSX.
+    // I will use a separate tool call to add the import if needed, or just rewrite the top of the file.
+    // Actually, I'll rewrite the whole file component logic to be safe.)
+
+    // ... wait, I need to add the import at the top first. I'll do that in a separate tool call or just replace the imports block.
+    // Let's replace the useEffect block first, assuming standard import.
+
     useEffect(() => {
         window.scrollTo(0, 0);
         if (!state) {
@@ -29,12 +38,28 @@ export const ThankYou: React.FC = () => {
             return;
         }
 
-        // Prevent duplicate tracking (React Strict Mode etc.)
+        // Prevent duplicate tracking
         if (hasTracked.current) return;
         hasTracked.current = true;
 
-        // Track Purchase (Frontend)
-        const trackPurchase = () => {
+        const trackEvents = async () => {
+            // Import dynamically to avoid top-level issues if I can't edit top easily
+            const { sha256 } = await import('../lib/utils');
+
+            // Hashing PII
+            const hashedPhone = await sha256(state.customer.phone);
+            // Email is not captured in checkout currently, but if we had it:
+            // const hashedEmail = await sha256(state.customer.email);
+
+            // TikTok Identify
+            if ((window as any).ttq) {
+                (window as any).ttq.identify({
+                    "phone_number": hashedPhone,
+                    // "email": hashedEmail 
+                });
+            }
+
+            // Track Purchase (Frontend)
             // FB
             if ((window as any).fbq) {
                 (window as any).fbq('track', 'Purchase', {
@@ -46,26 +71,24 @@ export const ThankYou: React.FC = () => {
                     num_items: state.items.reduce((acc, i) => acc + i.quantity, 0)
                 });
             }
-            // TikTok
+            // TikTok (Strict format)
             if ((window as any).ttq) {
                 (window as any).ttq.track('PlaceAnOrder', {
-                    content_name: 'Order ' + state.orderId,
-                    content_id: state.orderId,
-                    content_type: 'product',
-                    value: state.total,
-                    currency: 'PKR',
                     contents: state.items.map(i => ({
                         content_id: i.id,
+                        content_type: 'product',
                         content_name: i.name,
                         quantity: i.quantity,
                         price: i.price
-                    }))
+                    })),
+                    value: state.total,
+                    currency: 'PKR'
                 });
             }
         };
 
-        // Small delay to ensure pixels loaded
-        setTimeout(trackPurchase, 500);
+        // Execute tracking
+        trackEvents();
 
     }, [state, navigate]);
 

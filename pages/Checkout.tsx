@@ -37,6 +37,37 @@ export const Checkout: React.FC = () => {
         return `${m}:${s < 10 ? '0' : ''}${s}`;
     };
 
+    // Track InitiateCheckout
+    useEffect(() => {
+        if (cart.length === 0) return;
+
+        // Facebook
+        if ((window as any).fbq) {
+            (window as any).fbq('track', 'InitiateCheckout', {
+                content_ids: cart.map(item => item.id),
+                content_type: 'product',
+                value: cartTotal,
+                currency: 'PKR',
+                num_items: cart.reduce((acc, item) => acc + item.quantity, 0)
+            });
+        }
+
+        // TikTok
+        if ((window as any).ttq) {
+            (window as any).ttq.track('InitiateCheckout', {
+                contents: cart.map(item => ({
+                    content_id: item.id,
+                    content_type: 'product',
+                    content_name: item.name,
+                    quantity: item.quantity,
+                    price: item.price
+                })),
+                value: cartTotal,
+                currency: 'PKR'
+            });
+        }
+    }, []); // Run once on mount
+
     if (cart.length === 0) {
         return (
             <div className="min-h-screen pt-24 flex flex-col items-center justify-center bg-gray-50">

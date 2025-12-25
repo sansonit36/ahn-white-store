@@ -91,6 +91,23 @@ export const ProductPage: React.FC = () => {
     );
   }
 
+  // Track ViewContent on Mount
+  useEffect(() => {
+    if (selectedBundle && (window as any).ttq) {
+      (window as any).ttq.track('ViewContent', {
+        contents: [{
+          content_id: selectedBundle.id,
+          content_type: 'product',
+          content_name: selectedBundle.name,
+          price: selectedBundle.price,
+          quantity: 1
+        }],
+        value: selectedBundle.price,
+        currency: 'PKR'
+      });
+    }
+  }, [selectedBundle]);
+
   // Handle Add to Cart with Pixel
   const handleAddToCart = () => {
     // Facebook Pixel
@@ -106,9 +123,13 @@ export const ProductPage: React.FC = () => {
     // TikTok Pixel
     if ((window as any).ttq) {
       (window as any).ttq.track('AddToCart', {
-        content_name: selectedBundle.name,
-        content_id: selectedBundle.id,
-        content_type: 'product',
+        contents: [{
+          content_id: selectedBundle.id,
+          content_type: 'product',
+          content_name: selectedBundle.name,
+          quantity: 1,
+          price: selectedBundle.price
+        }],
         value: selectedBundle.price,
         currency: 'PKR'
       });

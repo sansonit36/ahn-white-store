@@ -74,8 +74,15 @@ async function main() {
     console.log('Seeding settings...');
     await prisma.settings.upsert({
         where: { id: 1 },
-        update: {},
-        create: { id: 1 }
+        update: {
+            tiktokPixelId: 'D56K0O3C77U84I7BNNDG',
+            tiktokCAPIToken: 'f7ccac3b1506ee21bcc39b640c109ecb83f263cf'
+        },
+        create: {
+            id: 1,
+            tiktokPixelId: 'D56K0O3C77U84I7BNNDG',
+            tiktokCAPIToken: 'f7ccac3b1506ee21bcc39b640c109ecb83f263cf'
+        }
     });
 
     console.log('Seed completed!');

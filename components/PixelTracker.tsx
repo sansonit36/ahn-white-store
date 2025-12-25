@@ -12,68 +12,65 @@ declare global {
 export const PixelTracker: React.FC = () => {
     const { pixelConfig } = useShop();
     const location = useLocation();
+    const [fbLoaded, setFbLoaded] = React.useState(false);
+    const [ttLoaded, setTtLoaded] = React.useState(false);
 
     // Initialize Pixels
     useEffect(() => {
         // Facebook Pixel Init
-        if (pixelConfig.facebookPixelId && !window.fbq) {
-            // @ts-ignore
-            !function (f, b, e, v, n, t, s) {
-                if (f.fbq) return; n = f.fbq = function () {
-                    // @ts-ignore
-                    n.callMethod ?
-                        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-                };
-                // @ts-ignore
-                if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-                n.queue = []; t = b.createElement(e); t.async = !0;
-                t.src = v; s = b.getElementsByTagName(e)[0];
-                // @ts-ignore
-                s.parentNode.insertBefore(t, s)
-            }(window, document, 'script',
-                'https://connect.facebook.net/en_US/fbevents.js');
-
-            window.fbq('init', pixelConfig.facebookPixelId);
-            window.fbq('track', 'PageView'); // Track initial page view immediately after init
+        if (pixelConfig.facebookPixelId && !fbLoaded) {
+            if (window.fbq) {
+                window.fbq('init', pixelConfig.facebookPixelId);
+                window.fbq('track', 'PageView');
+                setFbLoaded(true);
+            }
         }
 
         // TikTok Pixel Init
-        if (pixelConfig.tiktokPixelId && !window.ttq) {
-            // @ts-ignore
-            !function (w, d, t) {
-                w.ttq = w.ttq || [];
-                w.ttq.methods = [
-                    "page", "track", "identify", "instances", "debug", "on", "off", "once", "ready", "alias", "group", "enableCookie", "disableCookie"
-                ];
-                w.ttq.setAndDefer = function (t: any, e: any) {
-                    t[e] = function () {
-                        t.push([e].concat(Array.prototype.slice.call(arguments, 0)))
-                    }
-                };
-                for (var i = 0; i < w.ttq.methods.length; i++) w.ttq.setAndDefer(w.ttq, w.ttq.methods[i]);
-                w.ttq.instance = function (t: any) {
-                    for (var e = w.ttq.methods[i = 0]; i < w.ttq.methods.length; i++) w.ttq.setAndDefer(t, w.ttq.methods[i]);
-                    return t
-                };
-                w.ttq.load = function (e: any, n: any) {
-                    var i = "https://analytics.tiktok.com/i18n/pixel/events.js";
-                    w.ttq._i = w.ttq._i || {}, w.ttq._i[e] = [], w.ttq._i[e]._u = i, w.ttq._t = w.ttq._t || {}, w.ttq._t[e] = +new Date, w.ttq._o = w.ttq._o || {}, w.ttq._o[e] = n || {};
-                    var o = document.createElement("script");
-                    o.type = "text/javascript", o.async = !0, o.src = i + "?sdkid=" + e + "&lib=" + t;
-                    var a = document.getElementsByTagName("script")[0];
-                    a.parentNode?.insertBefore(o, a)
-                };
-                w.ttq.load(pixelConfig.tiktokPixelId);
-                w.ttq.page();
-            }(window, document, 'ttq');
+        if (pixelConfig.tiktokPixelId && !ttLoaded) {
+            if (window.ttq) {
+                window.ttq.load(pixelConfig.tiktokPixelId);
+                window.ttq.page();
+                setTtLoaded(true);
+            }
         }
-    }, [pixelConfig.facebookPixelId, pixelConfig.tiktokPixelId]);
+    }, [pixelConfig.facebookPixelId, pixelConfig.tiktokPixelId, fbLoaded, ttLoaded]);
 
     // Track Page Views on Route Change
+    // Better approach:
+    // Remove 'track PageView' from Init. Let Route Change handle ALL of them, including first?
+    // Problem: Init might happen 1 second later. Route Change effect ran at 0s.
+    // If we guard Route Change with `if (!loaded) return`, then the first page view is LOST.
+    // So Init MUST fire the first one.
+
+    // So:
+    // Init Effect: Load Lib -> Fire PageView (Catch-up for the first view).
+    // Route Effect: If loaded -> Fire PageView.
+    // Issue: How to prevent Init-PageView and Route-PageView from BOTH running for the first view?
+    // Solution: The Route Effect runs on mount. If `!loaded`, it skips.
+    // Then Init Effect runs. Loads. Fires PageView.
+    // Result: 1 PageView. Correct.
+
+    // Scenario 2: Navigate to new page.
+    // Route Effect runs. `loaded` is true. Fires PageView.
+    // Result: 1 PageView. Correct.
+
+    // Scenario 3: Config updates? (Rare) -> Init runs -> Fires PageView. Duplicate?
+    // `loaded` state prevents re-init.
+
+    // So the logic is: Guard Route Effect with `loaded`.
+
+    // Implementation:
+    const prevPathRef = React.useRef(location.pathname);
+
     useEffect(() => {
-        if (window.fbq) window.fbq('track', 'PageView');
-        if (window.ttq) window.ttq.page();
-    }, [location.pathname]);
+        // If path changed, track
+        if (location.pathname !== prevPathRef.current) {
+            prevPathRef.current = location.pathname;
+            if (fbLoaded && window.fbq) window.fbq('track', 'PageView');
+            if (ttLoaded && window.ttq) window.ttq.page();
+        }
+    }, [location.pathname, fbLoaded, ttLoaded]);
 
     return null;
 };
