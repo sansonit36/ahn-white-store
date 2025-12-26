@@ -52,7 +52,8 @@ router.get('/me', (req, res) => {
         const decoded = jwt.verify(token, JWT_SECRET);
         res.json({ username: decoded.username });
     } catch (err) {
-        return res.status(401).json({ error: 'Invalid token' });
+        console.error("JWT Verification Failed:", err.message);
+        return res.status(401).json({ error: 'Invalid token', details: err.message });
     }
 });
 
