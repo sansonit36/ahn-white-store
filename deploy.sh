@@ -26,6 +26,7 @@ echo '🔙 Updating Backend...'
 cd server
 npm install
 npx prisma generate
+npx prisma db push --accept-data-loss
 # Restart PM2 (Backend)
 pm2 restart ahn-backend || pm2 start server.js --name 'ahn-backend'
 pm2 save
