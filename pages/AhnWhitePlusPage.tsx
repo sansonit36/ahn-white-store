@@ -329,6 +329,30 @@ export const AhnWhitePlusPage: React.FC = () => {
                     </div>
                 </div>
 
+                {/* --- UGC IMAGE SCROLL --- */}
+                <div className="mb-16 md:mb-24">
+                    <div className="flex flex-col items-center mb-8 text-center px-4">
+                        <div className="inline-flex items-center gap-2 bg-rose-50 text-rose-600 px-3 py-1 rounded-full text-xs font-bold mb-3 border border-rose-100">
+                            <Camera size={14} /> @ahnwhiteplus
+                        </div>
+                        <h2 className="text-2xl md:text-4xl font-serif font-bold text-gray-900">Real Glow. Real People.</h2>
+                        <p className="text-gray-500 mt-2 max-w-lg">Tag us to be featured! Join our growing community of radiant skin lovers.</p>
+                    </div>
+
+                    <div className="relative w-full overflow-hidden bg-white py-4">
+                        <div className="absolute top-0 left-0 w-8 md:w-32 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+                        <div className="absolute top-0 right-0 w-8 md:w-32 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+                        <div className="flex w-max animate-scroll">
+                            {marqueeImages.map((img, i) => (
+                                <div key={i} className="shrink-0 w-64 h-80 md:w-80 md:h-[450px] mx-3 md:mx-4 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group border border-gray-100 relative cursor-pointer">
+                                    <img src={img} alt="UGC" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
                 {/* --- REVIEWS SECTION --- */}
                 <div className="mb-16 md:mb-24">
                     <h2 className="text-2xl md:text-4xl font-serif font-bold text-center text-gray-900 mb-8 md:mb-12">Trusted by 15,000+ Customers</h2>
@@ -356,29 +380,7 @@ export const AhnWhitePlusPage: React.FC = () => {
                 {/* --- VIDEO REVIEWS SECTION --- */}
                 <VerticalVideos />
 
-                {/* --- UGC IMAGE SCROLL --- */}
-                <div className="mb-16 md:mb-24">
-                    <div className="flex flex-col items-center mb-8 text-center px-4">
-                        <div className="inline-flex items-center gap-2 bg-rose-50 text-rose-600 px-3 py-1 rounded-full text-xs font-bold mb-3 border border-rose-100">
-                            <Camera size={14} /> @ahnwhiteplus
-                        </div>
-                        <h2 className="text-2xl md:text-4xl font-serif font-bold text-gray-900">Real Glow. Real People.</h2>
-                        <p className="text-gray-500 mt-2 max-w-lg">Tag us to be featured! Join our growing community of radiant skin lovers.</p>
-                    </div>
 
-                    <div className="relative w-full overflow-hidden bg-white py-4">
-                        <div className="absolute top-0 left-0 w-8 md:w-32 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-                        <div className="absolute top-0 right-0 w-8 md:w-32 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
-                        <div className="flex w-max animate-scroll">
-                            {marqueeImages.map((img, i) => (
-                                <div key={i} className="shrink-0 w-64 h-80 md:w-80 md:h-[450px] mx-3 md:mx-4 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group border border-gray-100 relative cursor-pointer">
-                                    <img src={img} alt="UGC" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
 
                 {/* --- GUARANTEE SECTION --- */}
                 <div className="bg-white border-2 border-dashed border-amber-200 rounded-3xl p-8 md:p-12 text-center mb-16 md:mb-24 relative overflow-hidden group hover:border-amber-300 transition-colors">
