@@ -21,36 +21,8 @@ export const AhnWhitePlusPage: React.FC = () => {
     const [activeImage, setActiveImage] = useState(PRODUCT_IMAGE_MAIN);
     const [stockLeft, setStockLeft] = useState(14);
 
-    // Loading State
-    if (isLoading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500"></div>
-            </div>
-        );
-    }
-
     // FORCE SELECT "starter" PRODUCT (Product 1)
     const selectedProduct = products.find(p => p.id === 'starter') || products[0];
-
-    if (!selectedProduct) {
-        return (
-            <div className="min-h-screen flex flex-col items-center justify-center bg-white pt-20">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Product Not Found</h2>
-                <p className="text-gray-500 mb-4">We couldn't load the requested product.</p>
-                <div className="bg-gray-100 p-4 rounded text-xs font-mono text-left mb-4">
-                    <p>Products Loaded: {products.length}</p>
-                    <p>Is Loading: {isLoading ? 'Yes' : 'No'}</p>
-                </div>
-                <button
-                    onClick={() => window.location.reload()}
-                    className="px-6 py-2 bg-rose-500 text-white rounded-full font-bold"
-                >
-                    Retry
-                </button>
-            </div>
-        );
-    }
 
     // Sync activeImage with selected product
     useEffect(() => {
@@ -58,12 +30,6 @@ export const AhnWhitePlusPage: React.FC = () => {
             setActiveImage(selectedProduct.image);
         }
     }, [selectedProduct]);
-
-    // Handle marquee images
-    const sourceImages = (pixelConfig.realGlowImages && pixelConfig.realGlowImages.length > 0)
-        ? pixelConfig.realGlowImages
-        : UGC_IMAGES;
-    const marqueeImages = [...sourceImages, ...sourceImages, ...sourceImages];
 
     // Stock ticker
     useEffect(() => {
@@ -92,6 +58,8 @@ export const AhnWhitePlusPage: React.FC = () => {
 
     // Add to Cart Handler
     const handleAddToCart = () => {
+        if (!selectedProduct) return;
+
         // Facebook Pixel
         if ((window as any).fbq) {
             (window as any).fbq('track', 'AddToCart', {
@@ -126,6 +94,41 @@ export const AhnWhitePlusPage: React.FC = () => {
         navigate(`/product/${bundleId}`); // Route others to dynamic page
         window.scrollTo(0, 0);
     };
+
+    // Loading State
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500"></div>
+            </div>
+        );
+    }
+
+    if (!selectedProduct) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-white pt-20">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Product Not Found</h2>
+                <p className="text-gray-500 mb-4">We couldn't load the requested product.</p>
+                <div className="bg-gray-100 p-4 rounded text-xs font-mono text-left mb-4">
+                    <p>Products Loaded: {products.length}</p>
+                    <p>Is Loading: {isLoading ? 'Yes' : 'No'}</p>
+                </div>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="px-6 py-2 bg-rose-500 text-white rounded-full font-bold"
+                >
+                    Retry
+                </button>
+            </div>
+        );
+    }
+
+    // Handle marquee images
+    const sourceImages = (pixelConfig.realGlowImages && pixelConfig.realGlowImages.length > 0)
+        ? pixelConfig.realGlowImages
+        : UGC_IMAGES;
+    const marqueeImages = [...sourceImages, ...sourceImages, ...sourceImages];
+
 
     return (
         <div className="pt-28 md:pt-28 pb-32 md:pb-12 bg-white min-h-screen">
