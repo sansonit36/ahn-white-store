@@ -41,8 +41,11 @@ interface ShopContextType {
 
   // Reviews
   reviews: Review[];
-  createReview: (review: Omit<Review, 'id'>) => void;
+
   deleteReview: (id: number) => void;
+
+  // Loading State
+  isLoading: boolean;
 }
 
 const ShopContext = createContext<ShopContextType | undefined>(undefined);
@@ -131,6 +134,9 @@ export const ShopProvider = ({ children }: { children?: ReactNode }) => {
   // -- Reviews State --
   const [reviews, setReviews] = useState<Review[]>([]);
 
+  // -- Initial Loading State --
+  const [isLoading, setIsLoading] = useState(true);
+
   // Fetch Initial Data
   useEffect(() => {
     const fetchData = async () => {
@@ -153,6 +159,8 @@ export const ShopProvider = ({ children }: { children?: ReactNode }) => {
         }
       } catch (error) {
         console.error("Failed to fetch initial data", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -336,7 +344,8 @@ export const ShopProvider = ({ children }: { children?: ReactNode }) => {
       pixelConfig, updatePixelConfig,
       liveStats,
       media, addMedia, deleteMedia,
-      reviews, createReview, deleteReview
+      reviews, createReview, deleteReview,
+      isLoading
     }}>
       {children}
     </ShopContext.Provider>

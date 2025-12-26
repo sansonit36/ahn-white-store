@@ -57,6 +57,7 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({ beforeImage, afterImag
         src={afterImage}
         alt="After Result"
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        loading="lazy"
       />
       <div className="absolute top-6 right-6 bg-black/50 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-widest z-10 border border-white/20">
         AFTER
@@ -71,6 +72,7 @@ export const BeforeAfter: React.FC<BeforeAfterProps> = ({ beforeImage, afterImag
           src={beforeImage}
           alt="Before Result"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          loading="lazy"
         />
         <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-md text-gray-900 px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-widest z-10 shadow-sm">
           BEFORE

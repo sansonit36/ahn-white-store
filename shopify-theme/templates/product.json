@@ -1,0 +1,75 @@
+{
+    "sections": {
+        "main": {
+            "type": "main-product",
+            "settings": {
+                "show_sticky_atc": true
+            }
+        },
+        "before_after": {
+            "type": "before-after",
+            "settings": {
+                "heading": "Real Results (No Filter)"
+            }
+        },
+        "features": {
+            "type": "features-comparison",
+            "settings": {
+                "heading": "Why AHN is Better Than \"Mix Creams\""
+            }
+        },
+        "ingredients": {
+            "type": "ingredients-highlight",
+            "settings": {
+                "heading": "Transparent Formula"
+            },
+            "blocks": {
+                "ing1": {
+                    "type": "ingredient",
+                    "settings": {
+                        "title": "Niacinamide",
+                        "description": "Controls oil, minimizes pores, and fades dark spots."
+                    }
+                },
+                "ing2": {
+                    "type": "ingredient",
+                    "settings": {
+                        "title": "Alpha Arbutin",
+                        "description": "The gold standard for safe skin brightening."
+                    }
+                }
+            },
+            "block_order": [
+                "ing1",
+                "ing2"
+            ]
+        },
+        "videos": {
+            "type": "vertical-videos",
+            "settings": {
+                "heading": "Customer Stories"
+            }
+        },
+        "reviews": {
+            "type": "reviews",
+            "settings": {
+                "heading": "Customer Reviews"
+            }
+        },
+        "faq": {
+            "type": "faq",
+            "settings": {
+                "heading": "Common Questions"
+            }
+        }
+    },
+    "order": [
+        "main",
+        "before_after",
+        "features",
+        "ingredients",
+        "videos",
+        "faq",
+        "reviews"
+    ]
+}

@@ -1,0 +1,142 @@
+<div 
+  x-data="{ 
+    open: false, 
+    timeLeft: 600,
+    formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+  }"
+  @toggle-cart.window="open = !open; if(open) timeLeft = 600"
+  x-init="setInterval(() => { if(open && timeLeft > 0) timeLeft-- }, 1000)"
+  class="relative z-[60]"
+  style="display: none;"
+  x-show="open"
+>
+  <!-- Backdrop -->
+  <div 
+    x-show="open"
+    x-transition.opacity
+    @click="open = false"
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm"
+  ></div>
+
+  <!-- Drawer -->
+  <div 
+    x-show="open"
+    x-transition:enter="transform transition ease-in-out duration-300"
+    x-transition:enter-start="translate-x-full"
+    x-transition:enter-end="translate-x-0"
+    x-transition:leave="transform transition ease-in-out duration-300"
+    x-transition:leave-start="translate-x-0"
+    x-transition:leave-end="translate-x-full"
+    class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col"
+  >
+    
+    <!-- Header -->
+    <div class="p-4 md:p-6 border-b border-gray-100 flex justify-between items-center bg-white z-10">
+      <h2 class="text-xl md:text-2xl font-serif font-bold text-gray-900 flex items-center gap-2">
+        Your Cart <span class="text-sm font-sans font-normal text-gray-500">({{ cart.item_count }} items)</span>
+      </h2>
+      <button @click="open = false" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Urgency Bar -->
+    <div class="bg-gray-900 text-white py-2 md:py-3 px-4 md:px-6 flex justify-between items-center text-xs md:text-sm font-medium">
+      <div class="flex items-center gap-2 text-rose-300">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span x-text="`Reserved for ${formatTime(timeLeft)}`"></span>
+      </div>
+      <div class="flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400 animate-pulse"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.2-2.2.5-3.3.3-1.09 1-2.26 1.5-3.15C9.1 10.09 10 12.38 10 13c0 .55-.5 1-1 1.5Z"/></svg>
+        <span class="text-[10px] md:text-xs">High Demand</span>
+      </div>
+    </div>
+
+    <!-- Free Shipping Progress -->
+    <div class="px-4 md:px-6 py-3 md:py-4 bg-gradient-to-r from-rose-50 to-amber-50 border-b border-rose-100">
+      <div class="flex items-center gap-2 text-green-700 font-bold text-xs md:text-sm mb-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>Free Priority Shipping Unlocked!</span>
+      </div>
+      <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div class="h-full bg-green-500 w-full rounded-full"></div>
+      </div>
+    </div>
+
+    <!-- Cart Items -->
+    <div class="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50/50">
+      {% if cart.empty? %}
+        <div class="h-full flex flex-col items-center justify-center text-gray-500 space-y-4">
+          <p class="text-lg font-medium text-gray-900">Your cart is empty</p>
+          <button @click="open = false" class="mt-4 px-8 py-3 bg-black text-white rounded-full text-sm font-bold hover:bg-gray-800">Start Shopping</button>
+        </div>
+      {% else %}
+        <form action="{{ routes.cart_url }}" method="post" id="cart">
+          <div class="space-y-4">
+            {% for item in cart.items %}
+              <div class="bg-white p-3 md:p-4 rounded-xl border border-gray-100 shadow-sm flex gap-3 md:gap-4 transition-all hover:shadow-md group">
+                <div class="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden border border-gray-200 shrink-0 relative">
+                  <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                  <div>
+                    <div class="flex justify-between items-start">
+                      <h3 class="font-bold text-gray-900 line-clamp-2 leading-tight text-sm md:text-base">{{ item.product.title }}</h3>
+                      <a href="/cart/change?line={{ forloop.index }}&quantity=0" class="text-gray-400 hover:text-red-500 p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                      </a>
+                    </div>
+                    <p class="text-rose-500 font-bold mt-1 text-sm md:text-base">{{ item.final_price | money }}</p>
+                    <p class="text-[10px] text-amber-600 font-medium flex items-center gap-1 mt-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.2-2.2.5-3.3.3-1.09 1-2.26 1.5-3.15C9.1 10.09 10 12.38 10 13c0 .55-.5 1-1 1.5Z"/></svg>
+                      Only 4 left at this price
+                    </p>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </form>
+      {% endif %}
+    </div>
+
+    <!-- Footer -->
+    {% unless cart.empty? %}
+      <div class="bg-white p-4 md:p-6 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-20 pb-8 md:pb-6">
+        <div class="space-y-3 mb-4 md:mb-6">
+          <div class="flex justify-between items-center text-gray-500 text-sm">
+            <span>Subtotal</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+          <div class="flex justify-between items-center text-gray-500 text-sm">
+            <span>Shipping</span>
+            <span class="text-green-600 font-bold flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> FREE</span>
+          </div>
+          <div class="h-px bg-gray-100 my-2"></div>
+          <div class="flex justify-between items-center text-lg md:text-xl font-bold text-gray-900">
+            <span>Total</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+        </div>
+
+        <button 
+          name="checkout" 
+          type="submit" 
+          form="cart"
+          class="w-full bg-black text-white py-3 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-gray-800 transition-all shadow-lg shadow-gray-200 flex items-center justify-center gap-2 group active:scale-[0.98]"
+        >
+          SECURE CHECKOUT <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+
+        <div class="flex items-center justify-center gap-2 mt-4 text-xs text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Guaranteed Safe Checkout</span>
+        </div>
+      </div>
+    {% endunless %}
+  </div>
+</div>

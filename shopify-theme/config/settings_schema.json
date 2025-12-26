@@ -1,0 +1,36 @@
+[
+    {
+        "name": "theme_info",
+        "theme_name": "AHN White+ Theme",
+        "theme_author": "Antigravity",
+        "theme_version": "1.0.0",
+        "theme_documentation_url": "https://github.com/shopify/dawn",
+        "theme_support_url": "https://support.shopify.com/"
+    },
+    {
+        "name": "Colors",
+        "settings": [
+            {
+                "type": "color",
+                "id": "color_primary",
+                "label": "Primary Color",
+                "default": "#111827"
+            },
+            {
+                "type": "color",
+                "id": "color_accent",
+                "label": "Accent Color",
+                "default": "#f59e0b"
+            }
+        ]
+    },
+    {
+        "name": "Typography",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Fonts are loaded via Tailwind for now"
+            }
+        ]
+    }
+]

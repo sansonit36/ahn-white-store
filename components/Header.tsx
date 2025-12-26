@@ -39,9 +39,9 @@ export const Header: React.FC = () => {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8 font-medium text-sm tracking-wide">
-            <Link to="/" className={`hover:text-rose-500 transition-colors ${textColorClass}`}>HOME</Link>
-            <Link to="/product" className={`hover:text-rose-500 transition-colors ${textColorClass}`}>SHOP</Link>
-            <a href="#reviews" className={`hover:text-rose-500 transition-colors ${textColorClass}`}>REVIEWS</a>
+            <Link to="/ahn-white-plus-whitening-cream" className="text-sm font-medium hover:text-rose-500 transition-colors">Shop</Link>
+            <a href="#reviews" className="text-sm font-medium hover:text-rose-500 transition-colors">Reviews</a>
+            <a href="#safe-promise" className="text-sm font-medium hover:text-rose-500 transition-colors">Science</a>
           </nav>
 
           {/* Actions */}
@@ -83,14 +83,14 @@ export const Header: React.FC = () => {
             <span className="flex items-center gap-3"><Home size={20} className="text-gray-500" /> Home</span>
             <ChevronRight size={16} className="text-gray-400" />
           </Link>
-          <Link to="/product" className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-rose-50 transition-colors">
-            <span className="flex items-center gap-3"><Package size={20} className="text-gray-500" /> Shop Now</span>
-            <ChevronRight size={16} className="text-gray-400" />
-          </Link>
-          <a href="/#reviews" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-rose-50 transition-colors">
-            <span className="flex items-center gap-3"><Star size={20} className="text-gray-500" /> Reviews</span>
-            <ChevronRight size={16} className="text-gray-400" />
-          </a>
+          <nav className="flex flex-col gap-6 p-6">
+            <Link to="/ahn-white-plus-whitening-cream" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-gray-900 border-b border-gray-100 pb-4">
+              Shop Collection
+            </Link>
+            <a href="#reviews" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-gray-900 border-b border-gray-100 pb-4">
+              Real Reviews
+            </a>
+          </nav>
 
           <div className="mt-8 border-t border-gray-100 pt-8">
             <p className="text-sm text-gray-400 uppercase tracking-widest mb-4 font-bold text-center">Contact & Support</p>

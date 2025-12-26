@@ -1,0 +1,80 @@
+{% schema %}
+{
+  "name": "Features Comparison",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Typical \"Whitening\" Creams Fail"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Don't risk your skin barrier for a temporary fix."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features Comparison"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-2xl md:text-4xl font-serif font-bold text-gray-900 mb-4">{{ section.settings.heading }}</h2>
+      <p class="text-gray-500">{{ section.settings.subheading }}</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      <!-- The Old Way -->
+      <div class="bg-red-50 p-8 rounded-3xl border border-red-100">
+        <h3 class="text-xl font-bold text-red-800 mb-6 flex items-center gap-2">
+           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg>
+           The Risky Way
+        </h3>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3 text-red-700/80">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            <span><strong>Contains Steroids:</strong> Thin skin, redness, and acne flares when you stop.</span>
+          </li>
+          <li class="flex items-start gap-3 text-red-700/80">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            <span><strong>Mercury Risks:</strong> Dangerous health side effects and permanent damage.</span>
+          </li>
+          <li class="flex items-start gap-3 text-red-700/80">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            <span><strong>Fake Promises:</strong> "7 Day Challenge" usually means harsh bleaching.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- The AHN Way -->
+      <div class="bg-green-50 p-8 rounded-3xl border border-green-100 shadow-lg relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-green-200 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
+        <h3 class="text-xl font-bold text-green-800 mb-6 flex items-center gap-2">
+           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+           The AHN Safe Way
+        </h3>
+        <ul class="space-y-4 relative z-10">
+          <li class="flex items-start gap-3 text-green-800/80">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 5H5"/><path d="M5 19v2"/><path d="M9 19H5"/></svg>
+            <span><strong>Niacinamide + Alpha Arbutin:</strong> Safe, science-backed brightening actives.</span>
+          </li>
+          <li class="flex items-start gap-3 text-green-800/80">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 5H5"/><path d="M5 19v2"/><path d="M9 19H5"/></svg>
+            <span><strong>Barrier Repair:</strong> Glycerin & Allantoin soothe skin and prevent burning.</span>
+          </li>
+          <li class="flex items-start gap-3 text-green-800/80">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 5H5"/><path d="M5 19v2"/><path d="M9 19H5"/></svg>
+            <span><strong>Gradual Results:</strong> Real improvement in 3-4 weeks without the rebound.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

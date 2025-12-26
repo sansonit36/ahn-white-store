@@ -29,38 +29,10 @@ export const PixelTracker: React.FC = () => {
         // TikTok Pixel Init
         if (pixelConfig.tiktokPixelId && !ttLoaded) {
             if (window.ttq) {
-                // If the ID in config matches the one we hardcoded, we are good.
-                // But generally, just load it if not present.
-                // TikTok's load method is idempotent-ish but better to avoid double execution if possible.
-                // However, the hardcode is for D56... if DB returns D56..., it's fine.
-                // If we want to support dynamic changing, we should still call load with the config ID.
-                // But for now, let's trust the hardcode works for the initial page view.
-
-                // We mark it as loaded so we don't try again repeatedly.
+                // Load Pixel from Config
+                window.ttq.load(pixelConfig.tiktokPixelId);
+                window.ttq.page();
                 setTtLoaded(true);
-
-                // If we didn't hardcode, we would do:
-                // window.ttq.load(pixelConfig.tiktokPixelId);
-                // window.ttq.page();
-
-                // Since we hardcoded, let's just ensure we capture the specific ID if it's different?
-                // For simplicity and to fix the user's issue:
-                // We acknowledge it is loaded.
-
-                // If the config ID is DIFFERENT than the hardcoded one, we might want to load it too?
-                // Let's safe-guard:
-                // window.ttq.load(pixelConfig.tiktokPixelId); 
-                // This might duplicate if same ID.
-
-                // Current strategy: Rely on hardcode for the main pixel.
-                // Only load if current ID is NOT the hardcoded one? 
-                // Too complex.
-
-                // Verification: The user wants EVENTS.
-                // Hardcode in index.html gives PageView.
-                // PixelTracker handles Route Changes.
-
-                // So here, we just set loaded = true.
             }
         }
     }, [pixelConfig.facebookPixelId, pixelConfig.tiktokPixelId, fbLoaded, ttLoaded]);

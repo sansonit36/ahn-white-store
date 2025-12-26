@@ -1,0 +1,151 @@
+{
+    "sections": {
+        "hero": {
+            "type": "hero",
+            "settings": {
+                "heading": "Even Tone.\nClean Glow.\nNo Harsh Bleach.",
+                "subheading": "The gentle brightening cream that targets dark spots, acne marks, and sun tan using Niacinamide & Alpha Arbutin.",
+                "button_text": "SHOP NOW"
+            }
+        },
+        "before_after": {
+            "type": "before-after",
+            "settings": {
+                "heading": "Real Results (No Filter)"
+            }
+        },
+        "features": {
+            "type": "features-comparison",
+            "settings": {
+                "heading": "Why Typical \"Whitening\" Creams Fail"
+            }
+        },
+        "ingredients": {
+            "type": "ingredients-highlight",
+            "settings": {
+                "heading": "What's Inside Matters"
+            },
+            "blocks": {
+                "ing1": {
+                    "type": "ingredient",
+                    "settings": {
+                        "title": "Niacinamide",
+                        "description": "Controls oil, minimizes pores, and fades dark spots."
+                    }
+                },
+                "ing2": {
+                    "type": "ingredient",
+                    "settings": {
+                        "title": "Alpha Arbutin",
+                        "description": "The gold standard for safe skin brightening."
+                    }
+                },
+                "ing3": {
+                    "type": "ingredient",
+                    "settings": {
+                        "title": "Glycerin",
+                        "description": "Locks in moisture without making skin greasy."
+                    }
+                },
+                "ing4": {
+                    "type": "ingredient",
+                    "settings": {
+                        "title": "Allantoin",
+                        "description": "Soothes irritation and redness instantly."
+                    }
+                }
+            },
+            "block_order": [
+                "ing1",
+                "ing2",
+                "ing3",
+                "ing4"
+            ]
+        },
+        "bundles": {
+            "type": "featured-bundles",
+            "settings": {
+                "heading": "Choose Your Bundle"
+            }
+        },
+        "reviews": {
+            "type": "reviews",
+            "settings": {
+                "heading": "Trusted by 15,000+ Customers"
+            },
+            "blocks": {
+                "rev1": {
+                    "type": "review",
+                    "settings": {
+                        "author": "Ayesha K.",
+                        "body": "Finally a cream that doesn't burn! My skin feels so soft.",
+                        "rating": 5
+                    }
+                },
+                "rev2": {
+                    "type": "review",
+                    "settings": {
+                        "author": "Hira M.",
+                        "body": "Saw results in 3 weeks. Dark spots are fading.",
+                        "rating": 5
+                    }
+                },
+                "rev3": {
+                    "type": "review",
+                    "settings": {
+                        "author": "Sana L.",
+                        "body": "Best part is the non-sticky texture. Perfect for summer.",
+                        "rating": 5
+                    }
+                }
+            },
+            "block_order": [
+                "rev1",
+                "rev2",
+                "rev3"
+            ]
+        },
+        "videos": {
+            "type": "vertical-videos",
+            "settings": {
+                "heading": "Real Results, Real People"
+            }
+        },
+        "faq": {
+            "type": "faq",
+            "settings": {
+                "heading": "Frequently Asked Questions"
+            },
+            "blocks": {
+                "q1": {
+                    "type": "question",
+                    "settings": {
+                        "question": "Does this contain mercury or steroids?",
+                        "answer": "Absolutely not. AHN White+ is 100% free from mercury, hydroquinone, and steroids. We use safe actives like Niacinamide and Alpha Arbutin."
+                    }
+                },
+                "q2": {
+                    "type": "question",
+                    "settings": {
+                        "question": "When will I see results?",
+                        "answer": "Skincare is gradual. Most users see fresher skin in 7-10 days and significant dark spot reduction in 3-4 weeks of daily use."
+                    }
+                }
+            },
+            "block_order": [
+                "q1",
+                "q2"
+            ]
+        }
+    },
+    "order": [
+        "hero",
+        "before_after",
+        "features",
+        "ingredients",
+        "bundles",
+        "reviews",
+        "videos",
+        "faq"
+    ]
+}

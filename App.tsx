@@ -10,8 +10,29 @@ import { Admin } from './pages/Admin';
 import { ProductPage } from './pages/ProductPage';
 import { ThankYou } from './pages/ThankYou';
 import { Login } from './pages/Login';
+
 import { PixelTracker } from './components/PixelTracker';
 import { ShieldCheck } from 'lucide-react';
+import { ProductTemplate } from './pages/ProductTemplate';
+import { AhnWhitePlusPage } from './pages/AhnWhitePlusPage';
+
+// Redirect /product to the first product
+const ProductRedirect = () => {
+  const { products, isLoading } = useShop();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500"></div>
+      </div>
+    );
+  }
+
+  if (products.length > 0) {
+    return <Navigate to="/ahn-white-plus-whitening-cream" replace />;
+  }
+  return <Navigate to="/" replace />;
+};
 
 const Layout = ({ children }: { children?: React.ReactNode }) => {
   const location = useLocation();
@@ -68,7 +89,9 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/product" element={<ProductPage />} />
+            <Route path="/product" element={<ProductRedirect />} />
+            <Route path="/product/:id" element={<ProductTemplate />} />
+            <Route path="/ahn-white-plus-whitening-cream" element={<AhnWhitePlusPage />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/thank-you" element={<ThankYou />} />
             <Route path="/login" element={<Login />} />

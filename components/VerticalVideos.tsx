@@ -57,7 +57,7 @@ export const VerticalVideos: React.FC = () => {
               />
             ) : (
               // Fallback for default images
-              <img src={(item as any).thumbnail} alt={item.title || "Video"} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <img src={(item as any).thumbnail} alt={item.title || "Video"} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
             )}
 
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center pointer-events-none">

@@ -1,0 +1,207 @@
+{% schema %}
+{
+  "name": "Main Product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_sticky_atc",
+      "label": "Show Sticky Add-to-Cart on Mobile",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main Product"
+    }
+  ]
+}
+{% endschema %}
+
+<section 
+  id="MainProduct-{{ section.id }}" 
+  class="pt-28 md:pt-28 pb-32 md:pb-12 bg-white min-h-screen"
+  data-section="{{ section.id }}"
+  x-data="{ 
+    currentVariantId: {{ product.selected_or_first_available_variant.id }},
+    currentPrice: {{ product.selected_or_first_available_variant.price }},
+    currentCompareAtPrice: {{ product.selected_or_first_available_variant.compare_at_price | default: 0 }},
+    currentImage: '{{ product.selected_or_first_available_variant.featured_image | image_url: width: 800 | default: product.featured_image | image_url: width: 800 }}',
+    stockLeft: 14,
+    updateVariant(id, price, compareAt, image) {
+      this.currentVariantId = id;
+      this.currentPrice = price;
+      this.currentCompareAtPrice = compareAt;
+      if(image) this.currentImage = image;
+    }
+  }"
+  x-init="setInterval(() => { if(stockLeft > 3) stockLeft-- }, 45000)"
+>
+
+  <!-- Breadcrumbs -->
+  <div class="container mx-auto px-4 mb-4 md:mb-6">
+    <div class="text-xs md:text-sm text-gray-500 flex items-center gap-2">
+      <a href="/" class="hover:text-amber-500">Home</a> / <span>Shop</span> / <span class="text-gray-900 font-medium">{{ product.title }}</span>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4">
+    <div class="grid lg:grid-cols-2 gap-8 md:gap-12 mb-12 md:mb-20">
+
+      <!-- LEFT: IMAGE GALLERY -->
+      <div class="space-y-3 md:space-y-4">
+        <div class="aspect-square bg-[#FDF8F9] rounded-2xl md:rounded-3xl overflow-hidden relative group">
+          <img
+            :src="currentImage"
+            alt="{{ product.title }}"
+            class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+          >
+          {% if product.metafields.custom.badge %}
+            <div class="absolute top-3 left-3 md:top-4 md:left-4 bg-amber-500 text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
+              {{ product.metafields.custom.badge }}
+            </div>
+          {% endif %}
+        </div>
+        
+        <div class="grid grid-cols-4 gap-2 md:gap-4">
+          {% for media in product.media limit: 4 %}
+            <button
+              @click="currentImage = '{{ media | image_url: width: 800 }}'"
+              class="aspect-square rounded-lg md:rounded-xl overflow-hidden border-2 transition-all cursor-pointer hover:border-gray-200"
+              :class="{ 'border-rose-500 ring-2 ring-rose-100': currentImage === '{{ media | image_url: width: 800 }}', 'border-transparent': currentImage !== '{{ media | image_url: width: 800 }}' }"
+            >
+              <img src="{{ media | image_url: width: 200 }}" alt="{{ media.alt }}" class="w-full h-full object-cover">
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- RIGHT: PRODUCT INFO -->
+      <div class="flex flex-col">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="flex text-amber-400">
+             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <span class="text-xs md:text-sm text-gray-500 underline decoration-gray-300 underline-offset-4">1,240 Reviews</span>
+        </div>
+
+        <h1 class="text-2xl md:text-4xl font-serif font-bold text-gray-900 mb-3 md:mb-4">{{ product.title }}</h1>
+        <p class="text-gray-500 text-sm md:text-lg mb-4">{{ product.type }}</p>
+
+        <div class="bg-green-50 border border-green-200 rounded-lg p-3 mb-6 inline-flex items-start gap-2">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600 shrink-0"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+          <p class="text-xs md:text-sm text-green-800 font-medium">Safe Formula: No Mercury, No Hydroquinone, No Steroids. 100% Original.</p>
+        </div>
+
+        <div class="text-sm md:text-base text-gray-600 leading-relaxed mb-6">
+           {{ product.description }}
+        </div>
+
+        <!-- VARIANT/BUNDLE SELECTOR -->
+        <div class="space-y-4 mb-8">
+          <p class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-2 flex justify-between items-center">
+            Select Your Bundle
+            <span class="text-xs text-rose-500 font-bold animate-pulse flex items-center gap-1">
+               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.2-2.2.5-3.3.3-1.09 1-2.26 1.5-3.15C9.1 10.09 10 12.38 10 13c0 .55-.5 1-1 1.5Z"/></svg> 
+               Only <span x-text="stockLeft"></span> left at this price
+            </span>
+          </p>
+
+          {% form 'product', product, id: 'product-form' %}
+            <input type="hidden" name="id" :value="currentVariantId">
+            
+            <div class="flex flex-col gap-3">
+              {% for variant in product.variants %}
+                {% assign is_best_value = false %}
+                {% if forloop.index == 2 %}{% assign is_best_value = true %}{% endif %}
+
+                <label 
+                  class="relative p-3 md:p-4 rounded-xl border-2 cursor-pointer transition-all flex justify-between items-center group"
+                  :class="currentVariantId == {{ variant.id }} 
+                    ? 'border-amber-400 bg-amber-50/50 ring-1 ring-amber-200' 
+                    : 'border-gray-200 hover:border-rose-200 bg-white'"
+                  @click="updateVariant({{ variant.id }}, {{ variant.price }}, {{ variant.compare_at_price | default: 0 }}, '{{ variant.featured_image | image_url: width: 800 }}')"
+                >
+                  {% if is_best_value %}
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-sm tracking-wide z-10 flex items-center gap-1 whitespace-nowrap">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                       MOST POPULAR - BEST VALUE
+                    </div>
+                  {% endif %}
+
+                  <div class="flex items-center gap-3 md:gap-4">
+                    <div class="w-5 h-5 rounded-full border flex items-center justify-center shrink-0" :class="currentVariantId == {{ variant.id }} ? 'border-amber-500' : 'border-gray-300'">
+                      <div class="w-3 h-3 rounded-full bg-amber-500" x-show="currentVariantId == {{ variant.id }}"></div>
+                    </div>
+                    <div>
+                      <p class="font-bold text-sm md:text-base" :class="currentVariantId == {{ variant.id }} ? 'text-gray-900' : 'text-gray-700'">{{ variant.title }}</p>
+                      {% if variant.compare_at_price > variant.price %}
+                        <p class="text-xs text-green-600 font-semibold bg-green-50 px-1.5 py-0.5 rounded inline-block mt-0.5">
+                          Save {{ variant.compare_at_price | minus: variant.price | money }}
+                        </p>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div class="text-right ml-2">
+                    <div class="flex flex-col items-end">
+                      <span class="font-bold text-base md:text-lg text-gray-900">{{ variant.price | money }}</span>
+                      {% if variant.compare_at_price > variant.price %}
+                        <span class="text-xs md:text-sm text-gray-400 line-through">{{ variant.compare_at_price | money }}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </label>
+              {% endfor %}
+            </div>
+
+            <!-- ADD TO CART -->
+            <div class="hidden md:block mt-6 space-y-4">
+              <button 
+                type="submit" 
+                class="w-full bg-gray-900 text-white py-4 rounded-xl font-bold hover:bg-black transition-all shadow-lg shadow-gray-200 flex items-center justify-center gap-2 transform active:scale-[0.98]"
+              >
+                ADD TO CART — <span x-text="(currentPrice / 100).toLocaleString('en-PK', {style: 'currency', currency: 'PKR'}).replace('.00', '')"></span>
+              </button>
+              
+              <div class="flex items-center justify-center gap-6 text-xs text-gray-500">
+                <span class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3.19M15 6h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3.19"/><line x1="23" x2="1" y1="13" y2="13"/><polyline points="16 6 12 2 8 6"/></svg> Free Delivery</span>
+                <span class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg> Cash On Delivery</span>
+              </div>
+            </div>
+          {% endform %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY FOOTER (Mobile) -->
+  {% if section.settings.show_sticky_atc %}
+    <div class="fixed bottom-0 left-0 right-0 z-40 md:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.15)] bg-white animate-slide-up">
+      <div class="bg-amber-100 text-amber-800 text-[10px] py-1 text-center font-bold flex justify-center gap-2 items-center tracking-wide border-t border-amber-200">
+        🔥 High Demand: <span x-text="stockLeft"></span> bundles remaining
+      </div>
+      <div class="border-t border-gray-200 p-3 px-4 flex gap-3 items-center">
+        <div class="flex-1 flex flex-col justify-center">
+           <div class="flex items-center gap-2 mb-0.5" x-show="currentCompareAtPrice > currentPrice">
+             <span class="text-xs text-gray-400 line-through" x-text="(currentCompareAtPrice / 100).toLocaleString('en-PK', {style: 'currency', currency: 'PKR'}).replace('.00', '')"></span>
+             <span class="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-bold uppercase">
+               Save <span x-text="((currentCompareAtPrice - currentPrice) / 100).toLocaleString('en-PK', {style: 'currency', currency: 'PKR'}).replace('.00', '')"></span>
+             </span>
+           </div>
+           <p class="font-bold text-gray-900 text-xl leading-none" x-text="(currentPrice / 100).toLocaleString('en-PK', {style: 'currency', currency: 'PKR'}).replace('.00', '')"></p>
+        </div>
+        <button 
+          type="submit"
+          form="product-form"
+          class="flex-[1.5] bg-gray-900 text-white py-3.5 rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-transform"
+        >
+          Add to Cart <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="-rotate-90"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  {% endif %}
+</section>

@@ -37,7 +37,7 @@ export const Home: React.FC = () => {
               <span className="block mt-2 font-medium text-rose-500">0% Mercury. 0% Steroids. 100% Safe.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center md:justify-start px-8 md:px-0">
-              <Link to="/product" className="px-8 py-4 bg-rose-500 text-white rounded-full font-bold hover:bg-rose-600 transition-colors shadow-lg shadow-rose-200 flex items-center justify-center gap-2 text-sm md:text-base">
+              <Link to="/ahn-white-plus-whitening-cream" className="px-8 py-4 bg-rose-500 text-white rounded-full font-bold hover:bg-rose-600 transition-colors shadow-lg shadow-rose-200 flex items-center justify-center gap-2 text-sm md:text-base">
                 SHOP NOW <ArrowRight size={18} />
               </Link>
               <a href="#safe-promise" className="px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-full font-bold hover:bg-gray-50 transition-colors flex items-center justify-center text-sm md:text-base gap-2">
@@ -46,7 +46,7 @@ export const Home: React.FC = () => {
             </div>
           </div>
           <div className="relative group cursor-pointer order-1 md:order-2 px-8 md:px-0">
-            <Link to="/product">
+            <Link to="/ahn-white-plus-whitening-cream">
               <div className="absolute inset-0 bg-gradient-to-tr from-rose-200 to-amber-100 rounded-[3rem] transform rotate-3 scale-95 group-hover:rotate-0 transition-transform duration-700"></div>
               {/* Use first product image or default main */}
               <img
@@ -213,6 +213,11 @@ export const Home: React.FC = () => {
           <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
             {products.map((bundle, idx) => {
               const isBestValue = idx === 1;
+              // Link to dedicated page for starter, otherwise dynamic
+              const productUrl = bundle.id === 'starter'
+                ? '/ahn-white-plus-whitening-cream'
+                : `/product/${bundle.id}`;
+
               return (
                 <div key={bundle.id} className={`relative bg-white rounded-3xl border ${isBestValue ? 'border-amber-400 ring-4 ring-amber-50 scale-105 z-10' : 'border-gray-200'} shadow-lg hover:shadow-xl transition-all flex flex-col`}>
                   {isBestValue && (
@@ -228,11 +233,11 @@ export const Home: React.FC = () => {
 
                   <div className="p-6 md:p-8 pb-0 flex-1">
                     <div className="aspect-square bg-[#FDF8F9] rounded-2xl mb-6 overflow-hidden flex items-center justify-center">
-                      <Link to="/product" className="w-full h-full">
+                      <Link to={productUrl} className="w-full h-full">
                         <img src={bundle.image} alt={bundle.name} className="w-full h-full object-cover mix-blend-multiply hover:scale-105 transition-transform duration-500" />
                       </Link>
                     </div>
-                    <Link to="/product">
+                    <Link to={productUrl}>
                       <h3 className="text-xl md:text-2xl font-serif font-bold text-gray-900 hover:text-rose-500 transition-colors">{bundle.name}</h3>
                     </Link>
                     <div className="flex items-baseline gap-2 mt-2 mb-4">
