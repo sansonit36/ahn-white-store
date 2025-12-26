@@ -27,10 +27,35 @@ export const PixelTracker: React.FC = () => {
         }
 
         // TikTok Pixel Init
-        if (pixelConfig.tiktokPixelId && !ttLoaded) {
+        // Use Config ID or Fallback to Hardcoded ID
+        const tikTokId = pixelConfig.tiktokPixelId || 'D56K0O3C77U84I7BNNDG';
+
+        if (tikTokId && !ttLoaded) {
+            // Inject Base Code if missing
+            if (!window.ttq) {
+                (function (w: any, d, t) {
+                    w.TiktokAnalyticsObject = t;
+                    var ttq = w[t] = w[t] || [];
+                    ttq.methods = ["page", "track", "identify", "instances", "debug", "on", "off", "once", "ready", "alias", "group", "enableCookie", "disableCookie", "holdConsent", "revokeConsent", "grantConsent"];
+                    ttq.setAndDefer = function (t: any, e: any) { t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } };
+                    for (var i = 0; i < ttq.methods.length; i++) ttq.setAndDefer(ttq, ttq.methods[i]);
+                    ttq.instance = function (t: any) {
+                        for (var e = ttq._i[t] || [], n = 0; n < ttq.methods.length; n++) ttq.setAndDefer(e, ttq.methods[n]);
+                        return e
+                    };
+                    ttq.load = function (e: any, n: any) {
+                        var r = "https://analytics.tiktok.com/i18n/pixel/events.js";
+                        ttq._i = ttq._i || {}, ttq._i[e] = [], ttq._i[e]._u = r, ttq._t = ttq._t || {}, ttq._t[e] = +new Date, ttq._o = ttq._o || {}, ttq._o[e] = n || {};
+                        var n: any = document.createElement("script");
+                        n.type = "text/javascript", n.async = !0, n.src = r + "?sdkid=" + e + "&lib=" + t;
+                        var e: any = document.getElementsByTagName("script")[0];
+                        e.parentNode.insertBefore(n, e)
+                    };
+                })(window, document, 'ttq');
+            }
+
             if (window.ttq) {
-                // Load Pixel from Config
-                window.ttq.load(pixelConfig.tiktokPixelId);
+                window.ttq.load(tikTokId);
                 window.ttq.page();
                 setTtLoaded(true);
             }
