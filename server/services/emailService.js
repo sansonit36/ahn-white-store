@@ -55,7 +55,16 @@ const sendEmail = async (to, subject, html) => {
 const emailService = {
     sendOrderConfirmation: async (order) => {
         const subject = `Order Confirmation #${order.id} - AHN White+`;
-        const itemsList = JSON.parse(order.items).map(item =>
+
+        let items = [];
+        try {
+            items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items;
+        } catch (e) {
+            console.error("Error parsing items for email:", e);
+            items = [];
+        }
+
+        const itemsList = items.map(item =>
             `<li>${item.name} x${item.quantity} - Rs. ${item.price.toLocaleString()}</li>`
         ).join('');
 
@@ -118,7 +127,15 @@ const emailService = {
         const emails = settings.adminEmails.split(',').map(e => e.trim());
         const subject = `[NEW ORDER] #${order.id} - Rs. ${order.total}`;
 
-        const itemsList = JSON.parse(order.items).map(item =>
+        let items = [];
+        try {
+            items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items;
+        } catch (e) {
+            console.error("Error parsing items for admin email:", e);
+            items = [];
+        }
+
+        const itemsList = items.map(item =>
             `<li>${item.name} x${item.quantity}</li>`
         ).join('');
 
