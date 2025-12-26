@@ -17,9 +17,7 @@ export const Checkout: React.FC = () => {
     const [formData, setFormData] = useState({
         fullName: '',
         address: '',
-        address: '',
         email: '',
-        street: '',
         street: '',
         area: '',
         city: '',
@@ -111,7 +109,8 @@ export const Checkout: React.FC = () => {
                 total: cartTotal,
                 date: new Date().toLocaleDateString('en-PK', { day: 'numeric', month: 'long', year: 'numeric' }),
                 status: 'Pending',
-                paymentMethod: 'COD'
+                paymentMethod: 'COD',
+                createdAt: new Date().toISOString()
             };
 
             const orderDetails = {
