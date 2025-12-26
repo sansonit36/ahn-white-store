@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useShop } from '../context/ShopContext';
 import { PRODUCT_IMAGE_MAIN } from '../constants';
-import { Star, Check, ShieldCheck, Truck, ChevronDown, Droplets, Sparkles, Sun, Fingerprint, Info, Camera, Flame, HeartHandshake } from 'lucide-react';
+import { Star, Check, ShieldCheck, Truck, ChevronDown, ChevronUp, Droplets, Sparkles, Sun, Fingerprint, Info, Camera, Flame, HeartHandshake } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BeforeAfter } from '../components/BeforeAfter';
 import { VerticalVideos } from '../components/VerticalVideos';
@@ -31,11 +31,20 @@ const UGC_IMAGES = [
     "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=600",
 ];
 
+const FAQS = [
+    { q: "Does this contain mercury or steroids?", a: "Absolutely not. AHN White+ is 100% free from mercury, hydroquinone, and steroids. We use safe actives like Niacinamide and Alpha Arbutin." },
+    { q: "Will my skin get darker if I stop using it?", a: "No. Since we don't use harsh steroids, there is no 'rebound' effect. However, for maintenance, we recommend continued use and always wearing sunscreen." },
+    { q: "Is it suitable for sensitive skin?", a: "Yes, the formula is designed to be gentle. However, we always recommend a patch test on your jawline before full application." },
+    { q: "When will I see results?", a: "Skincare is gradual. Most users see fresher skin in 7-10 days and significant dark spot reduction in 3-4 weeks of daily use." },
+    { q: "How do I know I received the original product?", a: "Every AHN box comes with a holographic seal and a batch code printed on the bottom. If the seal is broken, do not use it and contact us." },
+];
+
 export const AhnWhitePlusPage: React.FC = () => {
     const navigate = useNavigate();
     const { addToCart, products, pixelConfig, isLoading, reviews } = useShop();
 
     const [activeImage, setActiveImage] = useState(PRODUCT_IMAGE_MAIN);
+    const [openFaq, setOpenFaq] = useState<number | null>(0);
     const [stockLeft, setStockLeft] = useState(14);
 
     // FORCE SELECT "starter" PRODUCT (Product 1)
@@ -123,6 +132,10 @@ export const AhnWhitePlusPage: React.FC = () => {
         if (bundleId === 'starter') return; // Already here
         navigate(`/product/${bundleId}`); // Route others to dynamic page
         window.scrollTo(0, 0);
+    };
+
+    const toggleFaq = (index: number) => {
+        setOpenFaq(openFaq === index ? null : index);
     };
 
     // Loading State
@@ -353,6 +366,29 @@ export const AhnWhitePlusPage: React.FC = () => {
                     </div>
                 </div>
 
+                {/* FAQ SECTION */}
+                <div className="max-w-3xl mx-auto mb-16 md:mb-20">
+                    <h2 className="text-2xl md:text-3xl font-serif font-bold text-center mb-8 md:mb-12">Common Questions</h2>
+                    <div className="space-y-4">
+                        {FAQS.map((faq, i) => (
+                            <div key={i} className="border border-gray-200 rounded-xl overflow-hidden">
+                                <button
+                                    onClick={() => toggleFaq(i)}
+                                    className="w-full flex justify-between items-center p-4 md:p-5 bg-white text-left hover:bg-gray-50 transition-colors"
+                                >
+                                    <span className="font-medium text-gray-900 text-sm md:text-base pr-8">{faq.q}</span>
+                                    {openFaq === i ? <ChevronUp size={18} className="text-gray-400 shrink-0" /> : <ChevronDown size={18} className="text-gray-400 shrink-0" />}
+                                </button>
+                                {openFaq === i && (
+                                    <div className="p-4 md:p-5 pt-0 bg-white text-gray-600 text-sm leading-relaxed border-t border-gray-100">
+                                        {faq.a}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 {/* --- REVIEWS SECTION --- */}
                 <div className="mb-16 md:mb-24">
                     <h2 className="text-2xl md:text-4xl font-serif font-bold text-center text-gray-900 mb-8 md:mb-12">Trusted by 15,000+ Customers</h2>
@@ -430,6 +466,6 @@ export const AhnWhitePlusPage: React.FC = () => {
                     </button>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
