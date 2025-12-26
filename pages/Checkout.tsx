@@ -17,6 +17,7 @@ export const Checkout: React.FC = () => {
     const [formData, setFormData] = useState({
         fullName: '',
         address: '',
+        email: '',
         street: '',
         area: '',
         city: '',
@@ -101,6 +102,7 @@ export const Checkout: React.FC = () => {
                 id: orderId,
                 customerName: formData.fullName,
                 phone: phoneNumber,
+                email: formData.email,
                 city: formData.city,
                 address: fullAddress,
                 items: [...cart],
@@ -243,6 +245,7 @@ export const Checkout: React.FC = () => {
                                     <input name="address" onChange={handleInputChange} required type="text" placeholder="House No / Flat No" className="w-full p-3 md:p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none transition-all bg-gray-50 focus:bg-white text-sm md:text-base" />
                                     <input name="street" onChange={handleInputChange} required type="text" placeholder="Street Address / Road" className="w-full p-3 md:p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none transition-all bg-gray-50 focus:bg-white text-sm md:text-base" />
                                     <input name="area" onChange={handleInputChange} required type="text" placeholder="Area (e.g., DHA Phase 6)" className="w-full p-3 md:p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none transition-all bg-gray-50 focus:bg-white text-sm md:text-base" />
+                                    <input name="email" onChange={handleInputChange} type="email" placeholder="Email Address (Optional)" className="w-full p-3 md:p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none transition-all bg-gray-50 focus:bg-white text-sm md:text-base" />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">

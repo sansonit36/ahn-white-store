@@ -15,7 +15,7 @@ import {
 
 interface SidebarProps {
   activeTab: string;
-  setActiveTab: (tab: 'live' | 'analytics' | 'orders' | 'products' | 'marketing' | 'content') => void;
+  setActiveTab: (tab: 'live' | 'analytics' | 'orders' | 'products' | 'marketing' | 'content' | 'settings') => void;
   toggleAdminMode: () => void;
   navigate: (path: string) => void;
   ordersCount: number;
@@ -46,6 +46,9 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, toggleAdminM
       </button>
       <button onClick={() => setActiveTab('content')} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${activeTab === 'content' ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:bg-gray-50'}`}>
         <ImageIcon size={18} /> Site Content
+      </button>
+      <button onClick={() => setActiveTab('settings')} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${activeTab === 'settings' ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:bg-gray-50'}`}>
+        <Users size={18} /> Email Settings
       </button>
     </nav>
     <div className="p-4 border-t border-gray-100">
@@ -1229,10 +1232,98 @@ const ContentView = () => {
   );
 }
 
+const SettingsView = () => {
+  const { pixelConfig, updatePixelConfig } = useShop();
+  // Re-using pixelConfig/updatePixelConfig logic since it hits /api/settings which stores everything one big object
+  // Technically context calls it 'pixelConfig' but it's really 'settings'
+
+  return (
+    <div className="p-8 bg-gray-50 min-h-screen">
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">Email Settings</h2>
+
+      <div className="max-w-2xl space-y-6">
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+          <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <MessageSquare className="text-blue-500" /> Admin Notifications
+          </h3>
+          <p className="text-sm text-gray-500 mb-4">You will receive an email whenever a new order is placed.</p>
+
+          <label className="block text-sm font-bold text-gray-700 mb-1">Admin Emails (Comma Separated)</label>
+          <input
+            className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+            placeholder="admin@example.com, manager@example.com"
+            value={pixelConfig.adminEmails || ''}
+            onChange={(e) => updatePixelConfig({ adminEmails: e.target.value })}
+          />
+        </div>
+
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+          <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <Globe className="text-purple-500" /> SMTP Configuration
+          </h3>
+          <p className="text-sm text-gray-500 mb-4">Required for sending emails. Use Gmail, Zoho, or your hosting provider.</p>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-2">
+              <label className="block text-sm font-bold text-gray-700 mb-1">SMTP Host</label>
+              <input
+                className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                placeholder="smtp.gmail.com"
+                value={pixelConfig.smtpHost || ''}
+                onChange={(e) => updatePixelConfig({ smtpHost: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Port</label>
+              <input
+                className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                placeholder="587"
+                value={pixelConfig.smtpPort || ''}
+                onChange={(e) => updatePixelConfig({ smtpPort: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Secure (SSL/TLS)</label>
+              <select
+                className="w-full p-2.5 border border-gray-300 rounded-lg text-sm bg-white"
+                value={pixelConfig.smtpSecure ? 'true' : 'false'}
+                onChange={(e) => updatePixelConfig({ smtpSecure: e.target.value === 'true' })}
+              >
+                <option value="true">Yes (SSL/465)</option>
+                <option value="false">No (TLS/587)</option>
+              </select>
+            </div>
+            <div className="col-span-2">
+              <label className="block text-sm font-bold text-gray-700 mb-1">SMTP User / Email</label>
+              <input
+                className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                placeholder="you@gmail.com"
+                value={pixelConfig.smtpUser || ''}
+                onChange={(e) => updatePixelConfig({ smtpUser: e.target.value })}
+              />
+            </div>
+            <div className="col-span-2">
+              <label className="block text-sm font-bold text-gray-700 mb-1">SMTP Password</label>
+              <input
+                type="password"
+                className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                placeholder="App Password"
+                value={pixelConfig.smtpPass || ''}
+                onChange={(e) => updatePixelConfig({ smtpPass: e.target.value })}
+              />
+              <p className="text-xs text-gray-500 mt-1">For Gmail, use an <strong>App Password</strong>, not your login password.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Admin: React.FC = () => {
   const { isAdminMode, toggleAdminMode, orders } = useShop();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'live' | 'analytics' | 'orders' | 'products' | 'marketing' | 'content'>('live');
+  const [activeTab, setActiveTab] = useState<'live' | 'analytics' | 'orders' | 'products' | 'marketing' | 'content' | 'settings'>('live');
 
   // Auth Screen
   if (!isAdminMode) {
@@ -1269,6 +1360,7 @@ export const Admin: React.FC = () => {
         {activeTab === 'products' && <ProductsView />}
         {activeTab === 'marketing' && <MarketingView />}
         {activeTab === 'content' && <ContentView />}
+        {activeTab === 'settings' && <SettingsView />}
       </div>
     </div>
   );

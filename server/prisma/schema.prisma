@@ -26,6 +26,7 @@ model Order {
   id            String   @id @default(uuid())
   customerName  String
   phone         String
+  email         String?  // Optional email
   city          String
   address       String
   items         String   // Stored as JSON string
@@ -56,6 +57,14 @@ model Settings {
   realGlowImages    String @default("[]") // JSON string of array of URLs
   safePromiseImage  String @default("")
   ingredientsImage  String @default("")
+  
+  // Email Settings
+  adminEmails       String @default("") // Comma separated
+  smtpHost          String @default("")
+  smtpPort          String @default("")
+  smtpUser          String @default("")
+  smtpPass          String @default("")
+  smtpSecure        Boolean @default(true)
 }
 
 model Media {

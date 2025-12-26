@@ -67,6 +67,8 @@ router.get('/', async (req, res) => {
 
 const { sendFacebookPurchase, sendTikTokPurchase } = require('../lib/capi');
 
+const emailService = require('../services/emailService');
+
 // POST create order
 router.post('/', async (req, res) => {
     try {
@@ -83,6 +85,10 @@ router.post('/', async (req, res) => {
         sendFacebookPurchase(fullOrder, req).catch(console.error);
         sendTikTokPurchase(fullOrder, req).catch(console.error);
 
+        // Trigger Emails
+        emailService.sendOrderConfirmation(fullOrder).catch(console.error);
+        emailService.sendAdminNotification(fullOrder).catch(console.error);
+
         res.status(201).json(order);
     } catch (error) {
         console.error(error);
@@ -97,8 +103,15 @@ router.put('/:id', async (req, res) => {
             where: { id: req.params.id },
             data: req.body
         });
+
         // Parse items before returning
         order.items = JSON.parse(order.items);
+
+        // Check if Shipped
+        if (req.body.status === 'Shipped') {
+            emailService.sendOrderShipped(order).catch(console.error);
+        }
+
         res.json(order);
     } catch (error) {
         res.status(500).json({ error: 'Failed to update order' });

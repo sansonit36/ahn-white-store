@@ -34,6 +34,7 @@ export interface Order {
   id: string;
   customerName: string;
   phone: string;
+  email?: string;
   city: string;
   address: string;
   items: CartItem[];
@@ -54,6 +55,14 @@ export interface PixelConfig {
   realGlowImages?: string[];
   safePromiseImage?: string;
   ingredientsImage?: string;
+
+  // Email Settings
+  adminEmails?: string;
+  smtpHost?: string;
+  smtpPort?: string;
+  smtpUser?: string;
+  smtpPass?: string;
+  smtpSecure?: boolean;
 }
 
 export interface LiveStats {
