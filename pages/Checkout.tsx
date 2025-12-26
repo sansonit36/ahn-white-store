@@ -17,7 +17,9 @@ export const Checkout: React.FC = () => {
     const [formData, setFormData] = useState({
         fullName: '',
         address: '',
+        address: '',
         email: '',
+        street: '',
         street: '',
         area: '',
         city: '',
@@ -102,7 +104,7 @@ export const Checkout: React.FC = () => {
                 id: orderId,
                 customerName: formData.fullName,
                 phone: phoneNumber,
-                email: formData.email,
+                email: formData.email, // Make sure this is in formData
                 city: formData.city,
                 address: fullAddress,
                 items: [...cart],
@@ -114,7 +116,7 @@ export const Checkout: React.FC = () => {
 
             const orderDetails = {
                 orderId: newOrder.id,
-                customer: { ...formData, phone: phoneNumber },
+                customer: { ...formData, phone: phoneNumber }, // includes email
                 items: newOrder.items,
                 total: newOrder.total,
                 date: newOrder.date

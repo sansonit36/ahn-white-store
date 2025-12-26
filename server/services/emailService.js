@@ -26,9 +26,16 @@ const sendEmail = async (to, subject, html) => {
         const settings = await prisma.settings.findFirst();
 
         if (!transporter) {
-            console.log('Email skipped: No SMTP settings found.');
+            console.log('❌ Email skipped: No SMTP settings found.');
+            console.log('Current Settings:', {
+                host: settings?.smtpHost,
+                user: settings?.smtpUser,
+                hasPass: !!settings?.smtpPass
+            });
             return false;
         }
+
+        console.log(`📧 Attempting to send email to: ${to} | Subject: ${subject}`);
 
         const info = await transporter.sendMail({
             from: `"${settings.smtpUser}" <${settings.smtpUser}>`, // sender address
@@ -37,10 +44,10 @@ const sendEmail = async (to, subject, html) => {
             html,
         });
 
-        console.log("Message sent: %s", info.messageId);
+        console.log("✅ Message sent: %s", info.messageId);
         return true;
     } catch (error) {
-        console.error("Error sending email:", error);
+        console.error("❌ Error sending email:", error);
         return false;
     }
 };
