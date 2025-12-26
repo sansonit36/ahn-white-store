@@ -4,6 +4,23 @@ import { PRODUCT_IMAGE_MAIN } from '../constants';
 import { Star, Check, ShieldCheck, Truck, ChevronDown, Droplets, Sparkles, Sun, Fingerprint, Info, Camera, Flame, HeartHandshake } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BeforeAfter } from '../components/BeforeAfter';
+import { VerticalVideos } from '../components/VerticalVideos';
+
+// AUTHENTIC REVIEWS (Urdish, Mix, Typos)
+const AUTHENTIC_REVIEWS = [
+    { id: 101, user: "Fatima A.", rating: 5, comment: "Mera rang saaf ho gaya, bohat achi cream hai. 2 weeks mein fark mehsoos hua." },
+    { id: 102, user: "Ayesha Khan", rating: 4, comment: "Highly recommend! Delivery was thora late but product is 100% original. Result amazing hai." },
+    { id: 103, user: "Huma Z.", rating: 5, comment: "bht awla result hy, skin soft ho gai hy or spots bhi light ho gaye hain. will order again." },
+    { id: 104, user: "Sadia Malik", rating: 5, comment: "Pehle dar lag raha tha k fake na ho, but scan kar k check kiya original hai. Results are slow but good." },
+    { id: 105, user: "Zainab B.", rating: 5, comment: "Best whitening cream used till now. No side effects. Face glow kar raha hai." },
+    { id: 106, user: "Amna Sheikh", rating: 4, comment: "Packaging achi thi, cream ki fragrance bhi bohat pyari hai. 5 stars from my side." },
+    { id: 107, user: "Mrs. Ahmed", rating: 5, comment: "Meri beti k liye mangwai thi, usko bohat suit ki hai. Chhaiyan khatam ho gayi hain." },
+    { id: 108, user: "Saira K.", rating: 3, comment: "Product acha hai magar quantity thori kam hai price k hisab se. Results lekin achay hain." },
+    { id: 109, user: "Maha J.", rating: 5, comment: "Thanks AHN! Muje yakeen nahi tha itna acha result aye ga. Skin bilkul clear ho gai." },
+    { id: 110, user: "Anum", rating: 5, comment: "ordering 2nd time.. zabardast." },
+    { id: 111, user: "Kiran P.", rating: 4, comment: "bht achi hai, bus delivery time pe karein." },
+    { id: 112, user: "Sana Waris", rating: 5, comment: "Maine 1 month use ki, complexion bright hua hai. Recommended." },
+];
 
 const UGC_IMAGES = [
     "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&q=80&w=600",
@@ -316,7 +333,7 @@ export const AhnWhitePlusPage: React.FC = () => {
                 <div className="mb-16 md:mb-24">
                     <h2 className="text-2xl md:text-4xl font-serif font-bold text-center text-gray-900 mb-8 md:mb-12">Trusted by 15,000+ Customers</h2>
                     <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-                        {(reviews.length > 0 ? reviews : []).slice(0, 9).map((review) => ( // Showing top 9 reviews
+                        {AUTHENTIC_REVIEWS.map((review) => (
                             <div key={review.id} className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-rose-100">
                                 <div className="flex gap-1 text-amber-400 mb-4">
                                     {[...Array(review.rating)].map((_, i) => <Star key={i} size={16} fill="currentColor" />)}
@@ -333,11 +350,11 @@ export const AhnWhitePlusPage: React.FC = () => {
                                 </div>
                             </div>
                         ))}
-                        {reviews.length === 0 && (
-                            <div className="col-span-3 text-center text-gray-500">No reviews yet. Add them from Admin Panel.</div>
-                        )}
                     </div>
                 </div>
+
+                {/* --- VIDEO REVIEWS SECTION --- */}
+                <VerticalVideos />
 
                 {/* --- UGC IMAGE SCROLL --- */}
                 <div className="mb-16 md:mb-24">

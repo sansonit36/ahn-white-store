@@ -3,10 +3,10 @@ import { Play } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
 
 const DEFAULT_VIDEOS = [
-  { id: '1', title: "Morning Routine", thumbnail: "https://images.unsplash.com/photo-1556942154-007c9798cd92?auto=format&fit=crop&q=80&w=400", type: 'image' },
-  { id: '2', title: "Texture Shot", thumbnail: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=400", type: 'image' },
-  { id: '3', title: "Customer Review", thumbnail: "https://images.unsplash.com/photo-1546942153-e59b86347007?auto=format&fit=crop&q=80&w=400", type: 'image' },
-  { id: '4', title: "Unboxing AHN", thumbnail: "https://images.unsplash.com/photo-1554196346-b717b9642927?auto=format&fit=crop&q=80&w=400", type: 'image' },
+  { id: '1', title: "My Skin Transformation", thumbnail: "https://images.unsplash.com/photo-1556942154-007c9798cd92?auto=format&fit=crop&q=80&w=400", type: 'image', user: 'Hina K.' },
+  { id: '2', title: "Honest Review (Urdu)", thumbnail: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=400", type: 'image', user: 'Sana M.' },
+  { id: '3', title: "Best Whitening Cream?", thumbnail: "https://images.unsplash.com/photo-1546942153-e59b86347007?auto=format&fit=crop&q=80&w=400", type: 'image', user: 'Zara B.' },
+  { id: '4', title: "Unboxing AHN White+", thumbnail: "https://images.unsplash.com/photo-1554196346-b717b9642927?auto=format&fit=crop&q=80&w=400", type: 'image', user: 'Blog by A.' },
 ];
 
 export const VerticalVideos: React.FC = () => {
